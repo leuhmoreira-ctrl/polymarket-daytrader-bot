@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.24.2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "polymarket-daytrader-bot"
+version = "0.1.0"
+description = "Base project scaffold for a Polymarket day trader bot"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Moreira" }
+]
+dependencies = [
+  "pydantic-settings>=2.6.1",
+  "PyYAML>=6.0.2",
+  "httpx>=0.27.2",
+  "websockets>=13.1"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3.3",
+  "ruff>=0.8.0"
+]
+
+[project.scripts]
+polymarket-bot = "polymarket_bot.main:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/polymarket_bot"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
