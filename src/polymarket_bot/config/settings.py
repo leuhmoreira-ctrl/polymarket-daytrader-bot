@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import yaml
 from pydantic import BaseModel, Field
@@ -13,25 +12,54 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Environment-backed settings loaded from `.env` and process env vars."""
 
-    app_name: str = "polymarket-daytrader-bot"
-    environment: str = "dev"
+    polymarket_api_key: str = ""
+    news_api_key: str = ""
+    x_api_key: str = ""
     log_level: str = "INFO"
     config_path: Path = Path("config/default.yaml")
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        env_prefix="BOT_",
         extra="ignore",
     )
+
+
+class RiskConfig(BaseModel):
+    """Risk controls for day-trade operation."""
+
+    stop_loss_pct: float = 0.001
+    take_profit_pct: float = 0.0015
+    max_position_usd: float = 100.0
+    max_open_positions: int = 3
+
+
+class ExecutionConfig(BaseModel):
+    """Execution runtime controls."""
+
+    poll_interval_ms: int = 250
+
+
+class IntegrationConfig(BaseModel):
+    """Single integration placeholder config."""
+
+    base_url: str = ""
+    api_key_env: str = ""
+
+
+class IntegrationsConfig(BaseModel):
+    """Group all integration placeholder configs."""
+
+    polymarket: IntegrationConfig = Field(default_factory=IntegrationConfig)
+    news: IntegrationConfig = Field(default_factory=IntegrationConfig)
+    x: IntegrationConfig = Field(default_factory=IntegrationConfig)
 
 
 class RuntimeConfig(BaseModel):
     """YAML runtime config grouped by domain."""
 
-    strategy: dict[str, Any] = Field(default_factory=dict)
-    risk: dict[str, Any] = Field(default_factory=dict)
-    execution: dict[str, Any] = Field(default_factory=dict)
-    integrations: dict[str, Any] = Field(default_factory=dict)
+    risk: RiskConfig = Field(default_factory=RiskConfig)
+    execution: ExecutionConfig = Field(default_factory=ExecutionConfig)
+    integrations: IntegrationsConfig = Field(default_factory=IntegrationsConfig)
 
 
 def load_runtime_config(path: Path) -> RuntimeConfig:
@@ -49,6 +77,7 @@ def load_runtime_config(path: Path) -> RuntimeConfig:
 
 
 def load_settings() -> tuple[Settings, RuntimeConfig]:
+    """Load env settings and YAML runtime config."""
     settings = Settings()
     runtime_config = load_runtime_config(settings.config_path)
     return settings, runtime_config
