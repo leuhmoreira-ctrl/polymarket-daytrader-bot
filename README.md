@@ -22,6 +22,13 @@ UV_CACHE_DIR=/tmp/uv-cache uv run ruff check .
 UV_CACHE_DIR=/tmp/uv-cache uv run ruff format --check .
 ```
 
+## Tooling commands
+```bash
+uv run pytest
+uv run ruff format .
+uv run ruff check .
+```
+
 ## Local run
 ```bash
 UV_CACHE_DIR=/tmp/uv-cache uv run python -m polymarket_bot.main
