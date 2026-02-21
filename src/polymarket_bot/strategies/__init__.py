@@ -1,5 +1,5 @@
 """Trading strategies."""
 
-from polymarket_bot.strategies.base import BaseStrategy
+from polymarket_bot.strategies.base import Strategy
 
-__all__ = ["BaseStrategy"]
+__all__ = ["Strategy"]

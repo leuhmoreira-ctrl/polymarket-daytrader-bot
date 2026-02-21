@@ -2,19 +2,13 @@
 
 from __future__ import annotations
 
-from decimal import Decimal
-
-from polymarket_bot.config.settings import RuntimeConfig
-from polymarket_bot.core.models import OrderIntent
+from polymarket_bot.core.models import Position
 
 
 class RiskManager:
-    """Apply simple risk gates before execution."""
+    """Risk management interface."""
 
-    def __init__(self, runtime_config: RuntimeConfig) -> None:
-        self._runtime_config = runtime_config
-
-    def allow_order(self, intent: OrderIntent) -> bool:
-        max_notional = Decimal(str(self._runtime_config.risk.get("max_notional_usd", 100.0)))
-        notional = intent.price * intent.quantity
-        return notional <= max_notional
+    def should_exit(self, position: Position, pnl_pct: float) -> bool:
+        """TODO: implement exit decision using position state and pnl percentage."""
+        _ = position, pnl_pct
+        return False

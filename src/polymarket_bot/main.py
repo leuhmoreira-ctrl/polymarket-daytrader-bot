@@ -8,20 +8,17 @@ from polymarket_bot.config.settings import load_settings
 from polymarket_bot.utils.logger import configure_logging
 
 
-def run() -> int:
-    """Boot the app and confirm base components are wired."""
-    settings, runtime_config = load_settings()
+def bootstrap() -> None:
+    """Initialize base runtime dependencies."""
+    settings, _ = load_settings()
     configure_logging(settings.log_level)
 
+
+def run() -> int:
+    """Run the application entrypoint."""
+    bootstrap()
     logger = logging.getLogger("polymarket_bot")
-    logger.info("Starting %s in %s", settings.app_name, settings.environment)
-    logger.info(
-        "Runtime config loaded (strategy=%s, risk=%s, execution=%s, integrations=%s)",
-        bool(runtime_config.strategy),
-        bool(runtime_config.risk),
-        bool(runtime_config.execution),
-        bool(runtime_config.integrations),
-    )
+    logger.info("started")
     return 0
 
 

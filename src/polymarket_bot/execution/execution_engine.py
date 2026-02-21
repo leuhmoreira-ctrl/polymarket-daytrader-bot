@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from polymarket_bot.core.models import OrderIntent
+from polymarket_bot.core.models import Order
 
 
 class ExecutionEngine:
     """Order submission abstraction."""
 
-    async def submit(self, intent: OrderIntent) -> dict[str, str]:
-        # In phase 01 we only expose an interface contract.
-        return {"status": "stub", "market_id": intent.market_id}
+    async def place_order(self, order: Order) -> str:
+        """TODO: implement order placement in exchange adapter."""
+        _ = order
+        return "stub-order-id"

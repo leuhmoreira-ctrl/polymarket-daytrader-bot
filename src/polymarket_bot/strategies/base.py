@@ -4,12 +4,12 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 
-from polymarket_bot.core.models import MarketTick, OrderIntent
+from polymarket_bot.core.models import Market, Signal
 
 
-class BaseStrategy(ABC):
+class Strategy(ABC):
     """Base contract for strategy implementations."""
 
     @abstractmethod
-    def on_tick(self, tick: MarketTick) -> OrderIntent | None:
-        """Translate market data into an optional order intent."""
+    def generate_signal(self, market_state: Market) -> Signal | None:
+        """TODO: implement signal generation based on market state."""

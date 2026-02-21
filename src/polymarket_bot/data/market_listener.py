@@ -2,14 +2,12 @@
 
 from __future__ import annotations
 
-import websockets
-
 
 class MarketListener:
-    def __init__(self, websocket_url: str) -> None:
-        self.websocket_url = websocket_url
+    """Market listener stub."""
 
-    async def ping(self) -> bool:
-        async with websockets.connect(self.websocket_url) as conn:
-            await conn.ping()
-        return True
+    def __init__(self, source: str = "polymarket") -> None:
+        self.source = source
+
+    async def start(self) -> None:
+        """TODO: implement stream subscription and event dispatch."""
